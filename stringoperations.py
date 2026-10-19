@@ -1,0 +1,15 @@
+str="favourite"
+str2="fruits"
+print(str)
+print(str[3])
+print(str[-2])
+print(str[0:6])
+print(str[-4:])
+print(str[:-3])
+print(str[-5:-2])
+print(str[-6:-1:2])
+print(str2)
+print(str2.upper())
+print(str2.replace("fruits","vegies"))
+print(str + " " + str2)
+print(str2.split("i"))

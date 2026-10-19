@@ -133,7 +133,3 @@ def main():
         else:
             print("Invalid choice! Please enter a number from 1 to 6.")
 
-
-# Program execution starts here
-if __name__ == "__main__":
-    main()
