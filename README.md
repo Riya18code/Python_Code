@@ -1,6 +1,7 @@
 # 🐍 Python Core, OOP & Software Engineering Portfolio
 
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![NumPy](https://img.shields.io/badge/Library-NumPy-013243.svg?logo=numpy&logoColor=white)](https://numpy.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Clean](https://img.shields.io/badge/Code%20Style-PEP%208-brightgreen.svg)](https://peps.python.org/pep-0008/)
 [![Placement Ready](https://img.shields.io/badge/Focus-Placement%20%26%20Interviews-orange.svg)]()
@@ -17,6 +18,7 @@ This repository serves as a technical portfolio curated for campus placements, t
 - **Object-Oriented Design (OOD)**: Full mastery of the four pillars of OOP (Encapsulation, Abstraction, Inheritance, Polymorphism).
 - **File I/O & Persistent Storage**: Reading, writing, and appending structured data to persistent storage files.
 - **Algorithmic Fundamentals**: Array manipulations, recursion, search routines, and time-complexity awareness.
+- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, and vectorized computing fundamentals with NumPy.
 - **Package Modularity**: Real-world application breakdown using layered packages.
 
 ---
@@ -54,7 +56,7 @@ Every program in this repository is cataloged below with its key technical conce
 
 ---
 
-### 3. 📊 Data Structures & Algorithms
+### 3. 📊 Data Structures & Numerical Computing (NumPy & Arrays)
 
 | File / Program | Core Concepts | Functionality & Key Mechanics | Time / Space Complexity |
 | :--- | :--- | :--- | :--- |
@@ -62,6 +64,7 @@ Every program in this repository is cataloged below with its key technical conce
 | [`importarray.py`](importarray.py) | Memory-Efficient Homogeneous Arrays | Uses Python's native `array` module with type code `'i'` (signed integers) for dense memory allocation. | Memory efficiency vs heterogeneous Python lists; C-style memory buffers. |
 | [`traversalARRAY.py`](traversalARRAY.py) | Iteration & Traversal | Iterates over arrays using indexed `range(len(arr))` loops. | Traversal: $O(n)$ time, $O(1)$ auxiliary space. |
 | [`searching.py`](searching.py) | Linear Search Algorithm | Scans an array sequentially for a target key with an early `break` and Python's unique `for-else` block. | Worst: $O(n)$<br>Best: $O(1)$<br>Demonstrates clean loop termination. |
+| [`numpyarraycreation.py`](numpyarraycreation.py) | NumPy Multi-Dimensional Arrays (`ndarray`), Matrix Generation, Array Metadata | Generates 1D/2D arrays, pre-filled matrices (`zeros`, `ones`, `full`, `identity/eye`), numerical ranges (`arange`, `linspace`), and introspects core attributes (`ndim`, `shape`, `size`, `dtype`). | Contiguous C-memory block<br>Shape/Strides: $O(1)$<br>Vectorized SIMD readiness |
 
 ---
 
@@ -152,6 +155,7 @@ python abstractclass.py
 python recursion.py
 python finder.py
 python diary.py
+python numpyarraycreation.py
 ```
 
 ---
@@ -169,8 +173,12 @@ Because Python is dynamically typed and interprets functions by name in the loca
 </details>
 
 <details>
-<summary><b>3. What is the difference between a Python List and an Array?</b></summary>
-Python <b>lists</b> are heterogeneous (can hold elements of varying types) and store references to objects. Python <b>arrays</b> (from the <code>array</code> module) are homogeneous and store primitive data types contiguously in memory, offering significant memory savings.
+<summary><b>3. What is the difference between a Python List, the native Array module, and a NumPy Array?</b></summary>
+<ul>
+  <li><b>Python List:</b> Heterogeneous collection storing pointers/references to objects in scattered memory locations. Offers flexibility at the cost of high memory overhead and pointer dereferencing latency.</li>
+  <li><b>Native Array (<code>array.array</code>):</b> Homogeneous 1D collection storing contiguous C-type primitive values. Greatly reduces memory footprint compared to lists, but lacks multi-dimensional support and vectorized linear algebra operations.</li>
+  <li><b>NumPy Array (<code>numpy.ndarray</code>):</b> High-performance, N-dimensional homogeneous array stored in contiguous C/Fortran memory blocks. Supports vectorized operations (SIMD acceleration), broadcasting, fast matrix slicing, and $O(1)$ stride manipulations without copying data.</li>
+</ul>
 </details>
 
 <details>
@@ -186,6 +194,11 @@ Write mode (<code>"w"</code>) overwrites and truncates the file if it exists, cr
 <details>
 <summary><b>6. What is the time complexity of character membership testing (<code>ch in "aeiou"</code>) in Python?</b></summary>
 Checking membership in a small fixed-size string like <code>"aeiou"</code> takes $O(1)$ constant time ($k=5$ comparisons). For large collections, converting to a <code>set</code> yields true $O(1)$ hash table lookups versus $O(n)$ linear scans on long sequences.
+</details>
+
+<details>
+<summary><b>7. Why does NumPy use attributes like <code>.ndim</code>, <code>.shape</code>, <code>.size</code>, and <code>.dtype</code> instead of methods?</b></summary>
+In NumPy, array metadata (dimensionality, shape tuple, element count, and data type) are stored directly inside the C-level <code>PyArrayObject</code> struct header. Accessing them is an instantaneous $O(1)$ property lookup that does not require recomputing dimensions or iterating through elements.
 </details>
 
 ---
