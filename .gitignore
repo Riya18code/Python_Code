@@ -13,3 +13,6 @@ ENV/
 # Editor directories
 .vscode/
 .idea/
+
+# Local runtime & diary data
+diary.txt

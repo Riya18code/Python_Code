@@ -65,6 +65,8 @@ Every program in this repository is cataloged below with its key technical conce
 | [`traversalARRAY.py`](traversalARRAY.py) | Iteration & Traversal | Iterates over arrays using indexed `range(len(arr))` loops. | Traversal: $O(n)$ time, $O(1)$ auxiliary space. |
 | [`searching.py`](searching.py) | Linear Search Algorithm | Scans an array sequentially for a target key with an early `break` and Python's unique `for-else` block. | Worst: $O(n)$<br>Best: $O(1)$<br>Demonstrates clean loop termination. |
 | [`numpyarraycreation.py`](numpyarraycreation.py) | NumPy Multi-Dimensional Arrays (`ndarray`), Matrix Generation, Array Metadata | Generates 1D/2D arrays, pre-filled matrices (`zeros`, `ones`, `full`, `identity/eye`), numerical ranges (`arange`, `linspace`), and introspects core attributes (`ndim`, `shape`, `size`, `dtype`). | Contiguous C-memory block<br>Shape/Strides: $O(1)$<br>Vectorized SIMD readiness |
+| [`numpyrupee.py`](numpyrupee.py) | 1D & 2D Indexing, Positive/Negative Offsets, Range Slicing & Strided Reversals | Demonstrates 1D element access, negative indexing (`arr[-1]`), step slicing (`arr[::-1]`), and 2D coordinate indexing `[row, col]` on currency and score matrices. | Direct Offset: $O(1)$<br>Slicing/Reversal: $O(1)$ memory view |
+| [`housenumpy.py`](housenumpy.py) | 2D Column Slicing, Boolean Masking & Conditional Row Filtering | Analyzes multi-feature tabular housing data (Area, Bedrooms, Age), extracts column slices (`[:, 0]`, `[:, 1]`), and performs vectorized conditional filtering (`houses[houses[:, 0] > 1000]`). | Column Slice: $O(1)$ view<br>Mask Evaluation: $O(N)$ vectorized SIMD filter |
 
 ---
 
@@ -156,6 +158,8 @@ python recursion.py
 python finder.py
 python diary.py
 python numpyarraycreation.py
+python numpyrupee.py
+python housenumpy.py
 ```
 
 ---
@@ -199,6 +203,16 @@ Checking membership in a small fixed-size string like <code>"aeiou"</code> takes
 <details>
 <summary><b>7. Why does NumPy use attributes like <code>.ndim</code>, <code>.shape</code>, <code>.size</code>, and <code>.dtype</code> instead of methods?</b></summary>
 In NumPy, array metadata (dimensionality, shape tuple, element count, and data type) are stored directly inside the C-level <code>PyArrayObject</code> struct header. Accessing them is an instantaneous $O(1)$ property lookup that does not require recomputing dimensions or iterating through elements.
+</details>
+
+<details>
+<summary><b>8. What is the fundamental difference between NumPy array slicing and Python list slicing?</b></summary>
+When slicing a standard Python list (e.g. <code>my_list[1:4]</code>), Python allocates a <b>new list object and shallow-copies</b> pointers, costing $O(k)$ time and memory. In contrast, NumPy slicing (e.g. <code>rupee[1:4]</code> or <code>houses[:, 0]</code>) returns a <b>view</b> of the existing data buffer with modified strides and byte offsets. Creating a view is an instantaneous $O(1)$ operation that avoids memory allocation and data duplication.
+</details>
+
+<details>
+<summary><b>9. How does boolean masking / conditional filtering work in NumPy (e.g. <code>houses[houses[:, 0] > 1000]</code>)?</b></summary>
+The relational condition (<code>houses[:, 0] > 1000</code>) evaluates element-wise across the selected column slice using SIMD vectorization at C-speed, producing an array of boolean flags (<code>[False, True, False, True]</code>). When passed back into the array indexer, NumPy selects only rows where the corresponding flag is <code>True</code>, eliminating slow Python-level <code>for</code> loops and <code>if</code> conditions.
 </details>
 
 ---
