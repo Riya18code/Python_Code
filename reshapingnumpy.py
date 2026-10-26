@@ -1,0 +1,10 @@
+import numpy as np
+num=np.arange(1,13)
+print(num.shape)
+matrix=num.reshape(3,4)
+print(matrix)
+print(matrix.shape)
+matrix=np.array([ [1,2,3],[4,5,6]])
+print(matrix.flatten())
+print(matrix.ravel())
+print(matrix.T)

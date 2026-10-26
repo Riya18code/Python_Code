@@ -67,6 +67,12 @@ Every program in this repository is cataloged below with its key technical conce
 | [`numpyarraycreation.py`](numpyarraycreation.py) | NumPy Multi-Dimensional Arrays (`ndarray`), Matrix Generation, Array Metadata | Generates 1D/2D arrays, pre-filled matrices (`zeros`, `ones`, `full`, `identity/eye`), numerical ranges (`arange`, `linspace`), and introspects core attributes (`ndim`, `shape`, `size`, `dtype`). | Contiguous C-memory block<br>Shape/Strides: $O(1)$<br>Vectorized SIMD readiness |
 | [`numpyrupee.py`](numpyrupee.py) | 1D & 2D Indexing, Positive/Negative Offsets, Range Slicing & Strided Reversals | Demonstrates 1D element access, negative indexing (`arr[-1]`), step slicing (`arr[::-1]`), and 2D coordinate indexing `[row, col]` on currency and score matrices. | Direct Offset: $O(1)$<br>Slicing/Reversal: $O(1)$ memory view |
 | [`housenumpy.py`](housenumpy.py) | 2D Column Slicing, Boolean Masking & Conditional Row Filtering | Analyzes multi-feature tabular housing data (Area, Bedrooms, Age), extracts column slices (`[:, 0]`, `[:, 1]`), and performs vectorized conditional filtering (`houses[houses[:, 0] > 1000]`). | Column Slice: $O(1)$ view<br>Mask Evaluation: $O(N)$ vectorized SIMD filter |
+| [`indexingslicingnumpy.py`](indexingslicingnumpy.py) | 2D Multi-Axis Indexing, Submatrix Extraction & Row/Column Slicing | Demonstrates 2D coordinate indexing `[row, col]`, whole row selections `[i]` vs `[[i]]`, whole column slicing (`[:, 1]`, `[:, 0]`), and submatrix block extraction (`[1:3, 1:3]`). | Coordinate / Slice Access: $O(1)$ memory view<br>Submatrix Extraction: $O(1)$ view |
+| [`numpytemp.py`](numpytemp.py) | 2D Dataset Introspection & Vectorized Scalar Broadcasting | Instantiates a 2D temperature array, introspects dimensions/shape/datatype (`ndim`, `shape`, `size`, `dtype`), and applies arithmetic scalar broadcasting (`temperatures + 5`) across all elements without loops. | Introspection: $O(1)$ property lookup<br>Broadcasting: $O(N)$ vectorized SIMD calculation |
+| [`temperaturenumpy.py`](temperaturenumpy.py) | Statistical Reductions & Descriptive Aggregations | Evaluates 1D sensor/weather readings using NumPy reduction routines: arithmetic mean (`np.mean`), maximum (`np.max`), and minimum (`np.min`). | Aggregation: $O(N)$ single-pass C-speed reduction<br>Aux Space: $O(1)$ |
+| [`reshapingnumpy.py`](reshapingnumpy.py) | Shape Transformation, Flattening (`flatten` vs `ravel`) & Matrix Transpose | Reshapes continuous range vectors (`1D -> 3x4`), compares deep memory copy (`.flatten()`) vs zero-copy view (`.ravel()`), and performs 2D matrix transposition (`.T`). | Reshape/Transpose/Ravel: $O(1)$ view stride manipulation<br>Flatten: $O(N)$ contiguous copy |
+| [`joiningarray_numpy.py`](joiningarray_numpy.py) | Multi-Axis Array Concatenation & Stacking | Merges multiple 2D matrices along specific geometric axes using `np.concatenate()`: axis 0 (vertical stack) and axis 1 (horizontal stack). | Concatenation: $O(N \times M)$ memory allocation & contiguous buffer copy |
+
 
 ---
 
@@ -160,6 +166,11 @@ python diary.py
 python numpyarraycreation.py
 python numpyrupee.py
 python housenumpy.py
+python indexingslicingnumpy.py
+python joiningarray_numpy.py
+python reshapingnumpy.py
+python numpytemp.py
+python temperaturenumpy.py
 ```
 
 ---
@@ -213,6 +224,16 @@ When slicing a standard Python list (e.g. <code>my_list[1:4]</code>), Python all
 <details>
 <summary><b>9. How does boolean masking / conditional filtering work in NumPy (e.g. <code>houses[houses[:, 0] > 1000]</code>)?</b></summary>
 The relational condition (<code>houses[:, 0] > 1000</code>) evaluates element-wise across the selected column slice using SIMD vectorization at C-speed, producing an array of boolean flags (<code>[False, True, False, True]</code>). When passed back into the array indexer, NumPy selects only rows where the corresponding flag is <code>True</code>, eliminating slow Python-level <code>for</code> loops and <code>if</code> conditions.
+</details>
+
+<details>
+<summary><b>10. What is the fundamental difference between NumPy's <code>flatten()</code> and <code>ravel()</code>?</b></summary>
+Both methods return a 1D representation of a multi-dimensional array. However, <code>ravel()</code> returns a <b>view</b> (reference) of the original array whenever possible without allocating new memory, so changes to the raveled array modify the original array. In contrast, <code>flatten()</code> always allocates fresh memory and returns an independent <b>deep copy</b>.
+</details>
+
+<details>
+<summary><b>11. How does the <code>axis</code> parameter determine array concatenation in <code>np.concatenate()</code>?</b></summary>
+In multi-dimensional arrays, <code>axis</code> specifies the direction of operation: <code>axis=0</code> concatenates along rows (vertical stacking, increasing row count), whereas <code>axis=1</code> concatenates along columns (horizontal stacking, increasing column count). In NumPy, dimensions along all axes other than the concatenation axis must match identically.
 </details>
 
 ---
