@@ -18,7 +18,7 @@ This repository serves as a technical portfolio curated for campus placements, t
 - **Object-Oriented Design (OOD)**: Full mastery of the four pillars of OOP (Encapsulation, Abstraction, Inheritance, Polymorphism).
 - **File I/O & Persistent Storage**: Reading, writing, and appending structured data to persistent storage files.
 - **Algorithmic Fundamentals**: Array manipulations, recursion, search routines, and time-complexity awareness.
-- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, and vectorized computing fundamentals with NumPy.
+- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, scalar & multi-axis broadcasting, feature scaling for ML pipelines, and vectorized conditional selection (`np.where`) with NumPy.
 - **Package Modularity**: Real-world application breakdown using layered packages.
 
 ---
@@ -72,6 +72,13 @@ Every program in this repository is cataloged below with its key technical conce
 | [`temperaturenumpy.py`](temperaturenumpy.py) | Statistical Reductions & Descriptive Aggregations | Evaluates 1D sensor/weather readings using NumPy reduction routines: arithmetic mean (`np.mean`), maximum (`np.max`), and minimum (`np.min`). | Aggregation: $O(N)$ single-pass C-speed reduction<br>Aux Space: $O(1)$ |
 | [`reshapingnumpy.py`](reshapingnumpy.py) | Shape Transformation, Flattening (`flatten` vs `ravel`) & Matrix Transpose | Reshapes continuous range vectors (`1D -> 3x4`), compares deep memory copy (`.flatten()`) vs zero-copy view (`.ravel()`), and performs 2D matrix transposition (`.T`). | Reshape/Transpose/Ravel: $O(1)$ view stride manipulation<br>Flatten: $O(N)$ contiguous copy |
 | [`joiningarray_numpy.py`](joiningarray_numpy.py) | Multi-Axis Array Concatenation & Stacking | Merges multiple 2D matrices along specific geometric axes using `np.concatenate()`: axis 0 (vertical stack) and axis 1 (horizontal stack). | Concatenation: $O(N \times M)$ memory allocation & contiguous buffer copy |
+| [`Arithmeticnumpy.py`](Arithmeticnumpy.py) | Vectorized Element-Wise Arithmetic & Exponentiation | Computes element-wise vector operations (`+`, `-`, `*`, `/`, `**`) between matching-dimension 1D arrays without loops. | Vectorized SIMD: $O(N)$<br>Output Space: $O(N)$ |
+| [`broadcastingnumpy.py`](broadcastingnumpy.py) | Scalar-to-Array Broadcasting | Adds a scalar value (`10`) across a 1D vector; demonstrates NumPy automatically expanding scalar dimensions with zero memory duplication. | Vectorized SIMD: $O(N)$<br>Virtual Dimension: $O(1)$ |
+| [`newrow_numpy.py`](newrow_numpy.py) | Multi-Dimensional Row Broadcasting | Broadcasts a 1D row array of shape `(3,)` across a 3x3 matrix of shape `(3, 3)` along axis 0. | Vectorized: $O(N \times M)$<br>Zero-copy view expansion: $O(1)$ |
+| [`newcolumn_numpy.py`](newcolumn_numpy.py) | Multi-Dimensional Column Broadcasting | Broadcasts a 2D column vector of shape `(2, 1)` across a 2D matrix of shape `(2, 3)` along axis 1. | Vectorized: $O(N \times M)$<br>Zero-copy view expansion: $O(1)$ |
+| [`scaling_numpy.py`](scaling_numpy.py) | Feature Scaling & Data Normalization for ML | Performs vectorized decimal/range scaling (`marks / 100`) on tabular matrix data to normalize features into the $[0, 1]$ interval. | Normalization: $O(N \times M)$<br>Space: $O(N \times M)$ |
+| [`vectorizationcondn_numpy.py`](vectorizationcondn_numpy.py) | Vectorized Conditional Selection (`np.where`) | Performs scalar curve addition (`marks + 5`), boolean evaluation (`>= 40`), and ternary conditional replacement via `np.where()` without iteration. | Vectorized Selection: $O(N)$<br>Space: $O(N)$ |
+| [`Random_numpy.py`](Random_numpy.py) | Pseudorandom Sampling & Matrix Generation | Generates discrete uniform random integers (`np.random.randint`) for simulated events/matrices and continuous uniform floats (`np.random.rand`). | Sampling: $O(N)$ PRNG generation<br>Space: $O(N)$ |
 
 
 ---
@@ -171,6 +178,13 @@ python joiningarray_numpy.py
 python reshapingnumpy.py
 python numpytemp.py
 python temperaturenumpy.py
+python Arithmeticnumpy.py
+python broadcastingnumpy.py
+python newrow_numpy.py
+python newcolumn_numpy.py
+python scaling_numpy.py
+python vectorizationcondn_numpy.py
+python Random_numpy.py
 ```
 
 ---
@@ -234,6 +248,31 @@ Both methods return a 1D representation of a multi-dimensional array. However, <
 <details>
 <summary><b>11. How does the <code>axis</code> parameter determine array concatenation in <code>np.concatenate()</code>?</b></summary>
 In multi-dimensional arrays, <code>axis</code> specifies the direction of operation: <code>axis=0</code> concatenates along rows (vertical stacking, increasing row count), whereas <code>axis=1</code> concatenates along columns (horizontal stacking, increasing column count). In NumPy, dimensions along all axes other than the concatenation axis must match identically.
+</details>
+
+<details>
+<summary><b>12. What are the rules of NumPy Broadcasting, and how does it prevent memory duplication?</b></summary>
+NumPy compares array shapes element-wise starting from trailing (rightmost) dimensions. Two dimensions are compatible when:
+<ol>
+  <li>They are equal, or</li>
+  <li>One of them is <code>1</code> (or missing).</li>
+</ol>
+If a dimension is <code>1</code>, NumPy treats the array as if it were stretched along that axis by setting the stride for that axis to <code>0</code>. This means the same memory buffer is reused without allocating extra RAM, allowing operations between e.g. a <code>(2, 3)</code> matrix and a <code>(2, 1)</code> column vector at peak SIMD efficiency.
+</details>
+
+<details>
+<summary><b>13. How does <code>np.where(condition, x, y)</code> work as a vectorized ternary operator?</b></summary>
+<code>np.where(condition, x, y)</code> is the vectorized equivalent of Python's ternary <code>x if condition else y</code>. The condition is evaluated element-wise across the array at C speed; for each element where the condition is <code>True</code>, the value from <code>x</code> is selected; otherwise, the value from <code>y</code> is selected. It avoids Python bytecode loop overhead and returns a newly formatted array in $O(N)$ time.
+</details>
+
+<details>
+<summary><b>14. Why is feature scaling (e.g. <code>marks / 100</code>) important in machine learning data pipelines?</b></summary>
+Raw real-world numerical features often span disparate ranges (e.g. salaries in tens of thousands vs ages under 100). Feature scaling (normalizing values to a bounded range such as $[0, 1]$ or standard normal distribution with mean 0 and variance 1) prevents high-magnitude features from dominating distance metrics (Euclidean distance) and accelerates gradient descent convergence during model training.
+</details>
+
+<details>
+<summary><b>15. How does NumPy handle random number generation, and what is the difference between <code>randint()</code> and <code>rand()</code>?</b></summary>
+NumPy generates pseudorandom numbers using fast BitGenerators (such as PCG64). <code>np.random.randint(low, high, size)</code> produces discrete integers from the half-open interval $[low, high)$, suitable for discrete event simulations like dice rolls and matrix generation. In contrast, <code>np.random.rand(d0, d1, ...)</code> generates continuous floating-point numbers uniformly distributed over $[0, 1)$. For reproducible experiments, passing a seed fixes the deterministic pseudorandom sequence.
 </details>
 
 ---
