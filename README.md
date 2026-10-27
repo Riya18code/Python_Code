@@ -18,7 +18,7 @@ This repository serves as a technical portfolio curated for campus placements, t
 - **Object-Oriented Design (OOD)**: Full mastery of the four pillars of OOP (Encapsulation, Abstraction, Inheritance, Polymorphism).
 - **File I/O & Persistent Storage**: Reading, writing, and appending structured data to persistent storage files.
 - **Algorithmic Fundamentals**: Array manipulations, recursion, search routines, and time-complexity awareness.
-- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, scalar & multi-axis broadcasting, feature scaling for ML pipelines, and vectorized conditional selection (`np.where`) with NumPy.
+- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, scalar & multi-axis broadcasting, feature scaling for ML pipelines, vectorized conditional selection (`np.where`), missing value imputation (`np.isnan`, `np.nan_to_num`), and multi-axis sorting (`np.sort`, `np.argsort`) with NumPy.
 - **Package Modularity**: Real-world application breakdown using layered packages.
 
 ---
@@ -79,7 +79,8 @@ Every program in this repository is cataloged below with its key technical conce
 | [`scaling_numpy.py`](scaling_numpy.py) | Feature Scaling & Data Normalization for ML | Performs vectorized decimal/range scaling (`marks / 100`) on tabular matrix data to normalize features into the $[0, 1]$ interval. | Normalization: $O(N \times M)$<br>Space: $O(N \times M)$ |
 | [`vectorizationcondn_numpy.py`](vectorizationcondn_numpy.py) | Vectorized Conditional Selection (`np.where`) | Performs scalar curve addition (`marks + 5`), boolean evaluation (`>= 40`), and ternary conditional replacement via `np.where()` without iteration. | Vectorized Selection: $O(N)$<br>Space: $O(N)$ |
 | [`Random_numpy.py`](Random_numpy.py) | Pseudorandom Sampling & Matrix Generation | Generates discrete uniform random integers (`np.random.randint`) for simulated events/matrices and continuous uniform floats (`np.random.rand`). | Sampling: $O(N)$ PRNG generation<br>Space: $O(N)$ |
-
+| [`datacleaning_numpy.py`](datacleaning_numpy.py) | Missing Value Handling (`NaN`), Imputation & Boolean Filtering | Detects missing values with `np.isnan()`, imputes missing entries using `np.nan_to_num()` with mean statistic `np.nanmean()`, and filters low thresholds with boolean indexing. | Detection & Imputation: $O(N)$<br>Filtering: $O(N)$ |
+| [`sorting_numpy.py`](sorting_numpy.py) | 1D/2D Array Sorting, Indirect Index Sorting (`np.argsort`) & Axis-Wise Ordering | Sorts 1D arrays ascending and descending (`[::-1]`), retrieves index permutations using `np.argsort()`, and sorts 2D matrices independently across rows (`axis=1`) and columns (`axis=0`). | 1D Sort: $O(N \log N)$ (Introsort/QuickSort)<br>2D Multi-Axis: $O(M \times N \log N)$ |
 
 ---
 
@@ -185,6 +186,8 @@ python newcolumn_numpy.py
 python scaling_numpy.py
 python vectorizationcondn_numpy.py
 python Random_numpy.py
+python datacleaning_numpy.py
+python sorting_numpy.py
 ```
 
 ---
@@ -273,6 +276,16 @@ Raw real-world numerical features often span disparate ranges (e.g. salaries in 
 <details>
 <summary><b>15. How does NumPy handle random number generation, and what is the difference between <code>randint()</code> and <code>rand()</code>?</b></summary>
 NumPy generates pseudorandom numbers using fast BitGenerators (such as PCG64). <code>np.random.randint(low, high, size)</code> produces discrete integers from the half-open interval $[low, high)$, suitable for discrete event simulations like dice rolls and matrix generation. In contrast, <code>np.random.rand(d0, d1, ...)</code> generates continuous floating-point numbers uniformly distributed over $[0, 1)$. For reproducible experiments, passing a seed fixes the deterministic pseudorandom sequence.
+</details>
+
+<details>
+<summary><b>16. How does NumPy handle missing data (<code>NaN</code>), and why should we use <code>np.nanmean()</code> instead of <code>np.mean()</code>?</b></summary>
+<code>np.nan</code> represents missing or undefined numerical data under IEEE 754 floating-point standards. Standard arithmetic reductions (such as <code>np.mean()</code> or <code>np.sum()</code>) propagate <code>NaN</code>, returning <code>nan</code> if any missing values exist. NumPy provides NaN-safe alternatives like <code>np.nanmean()</code>, <code>np.nansum()</code>, and <code>np.nanstd()</code> that ignore missing entries during computation. To clean arrays, <code>np.nan_to_num(arr, nan=replacement_value)</code> imputes missing values with statistical measures (e.g. mean) cleanly without altering array shapes.
+</details>
+
+<details>
+<summary><b>17. What is the difference between <code>np.sort()</code> and <code>np.argsort()</code>, and how does the <code>axis</code> parameter govern 2D sorting?</b></summary>
+<code>np.sort()</code> returns a sorted copy of array elements, whereas <code>np.argsort()</code> returns an array of integer indices representing the permutation that would sort the array. This index mapping is essential for sorting related parallel datasets or ranking elements. For 2D matrices, <code>axis=1</code> sorts each row independently along the horizontal direction, while <code>axis=0</code> sorts each column independently along the vertical direction.
 </details>
 
 ---
