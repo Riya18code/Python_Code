@@ -18,7 +18,7 @@ This repository serves as a technical portfolio curated for campus placements, t
 - **Object-Oriented Design (OOD)**: Full mastery of the four pillars of OOP (Encapsulation, Abstraction, Inheritance, Polymorphism).
 - **File I/O & Persistent Storage**: Reading, writing, and appending structured data to persistent storage files.
 - **Algorithmic Fundamentals**: Array manipulations, recursion, search routines, and time-complexity awareness.
-- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, scalar & multi-axis broadcasting, feature scaling for ML pipelines, vectorized conditional selection (`np.where`), missing value imputation (`np.isnan`, `np.nan_to_num`), multi-axis sorting (`np.sort`, `np.argsort`), and linear algebra routines (`np.linalg`: matrix multiplication `@`/`np.dot`, dot products, determinants, matrix inverses, identity matrices, and linear system solvers) with NumPy.
+- **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, scalar & multi-axis broadcasting, feature scaling for ML pipelines, vectorized conditional selection (`np.where`), missing value imputation (`np.isnan`, `np.nan_to_num`), multi-axis sorting (`np.sort`, `np.argsort`), linear algebra routines (`np.linalg`: matrix multiplication `@`/`np.dot`, dot products, determinants, matrix inverses, identity matrices, and linear system solvers), and practical data analytics pipelines with NumPy.
 - **Package Modularity**: Real-world application breakdown using layered packages.
 
 ---
@@ -87,6 +87,7 @@ Every program in this repository is cataloged below with its key technical conce
 | [`dotproductofvectors_numpy.py`](dotproductofvectors_numpy.py) | Vector Dot Product (`np.dot`) | Calculates the algebraic inner product $\mathbf{x} \cdot \mathbf{y} = \sum x_i y_i$ between two 1D vectors with SIMD acceleration. | Time: $O(N)$ vectorized SIMD<br>Space: $O(1)$ scalar result |
 | [`inverse_numpy.py`](inverse_numpy.py) | Matrix Inversion (`np.linalg.inv`) | Computes the multiplicative matrix inverse $A^{-1}$ such that $A \cdot A^{-1} = I$ for non-singular square matrices. | Inversion: $O(N^3)$ Gaussian/LU decomposition<br>Conditioning & numerical stability |
 | [`matrixmul_numpy.py`](matrixmul_numpy.py) | Matrix Multiplication (`@` Operator & `np.dot`) | Performs true matrix-matrix multiplication between 2D matrices using both Python 3.5+ `@` operator and `np.dot()`. | Matrix Product: $O(N^3)$ (optimized BLAS/GEMM routines)<br>Dimensional compatibility ($M \times K$ with $K \times N$) |
+| [`miniproject_numpy.py`](miniproject_numpy.py) | Student Performance Analytics Mini-Project (`NaN` Imputation, Aggregations & Argmax) | Comprehensive data cleaning and analytics workflow: detects missing values with `np.isnan()`, computes subject means via `np.nanmean(axis=0)`, imputes missing marks with `np.where()`, calculates student totals/averages (`axis=1`), and determines top rankers with `np.argmax()`. | Imputation & Cleaning: $O(N \times M)$<br>Row/Column Reductions: $O(N \times M)$<br>Top Student Argmax: $O(N)$ |
 
 ---
 
