@@ -2,6 +2,7 @@
 
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![NumPy](https://img.shields.io/badge/Library-NumPy-013243.svg?logo=numpy&logoColor=white)](https://numpy.org/)
+[![Pandas](https://img.shields.io/badge/Library-Pandas-150458.svg?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Clean](https://img.shields.io/badge/Code%20Style-PEP%208-brightgreen.svg)](https://peps.python.org/pep-0008/)
 [![Placement Ready](https://img.shields.io/badge/Focus-Placement%20%26%20Interviews-orange.svg)]()
@@ -19,6 +20,7 @@ This repository serves as a technical portfolio curated for campus placements, t
 - **File I/O & Persistent Storage**: Reading, writing, and appending structured data to persistent storage files.
 - **Algorithmic Fundamentals**: Array manipulations, recursion, search routines, and time-complexity awareness.
 - **Scientific & Numerical Computing**: High-performance multi-dimensional arrays (`ndarray`), matrix initialization routines, scalar & multi-axis broadcasting, feature scaling for ML pipelines, vectorized conditional selection (`np.where`), missing value imputation (`np.isnan`, `np.nan_to_num`), multi-axis sorting (`np.sort`, `np.argsort`), linear algebra routines (`np.linalg`: matrix multiplication `@`/`np.dot`, dot products, determinants, matrix inverses, identity matrices, and linear system solvers), and practical data analytics pipelines with NumPy.
+- **Tabular Data Analysis (Pandas)**: 1D labeled series creation, custom index mapping, and 2D DataFrame construction from structured dictionary datasets.
 - **Package Modularity**: Real-world application breakdown using layered packages.
 
 ---
@@ -56,7 +58,7 @@ Every program in this repository is cataloged below with its key technical conce
 
 ---
 
-### 3. 📊 Data Structures & Numerical Computing (NumPy & Arrays)
+### 3. 📊 Data Structures & Numerical / Tabular Computing (NumPy, Pandas & Arrays)
 
 | File / Program | Core Concepts | Functionality & Key Mechanics | Time / Space Complexity |
 | :--- | :--- | :--- | :--- |
@@ -88,6 +90,9 @@ Every program in this repository is cataloged below with its key technical conce
 | [`inverse_numpy.py`](inverse_numpy.py) | Matrix Inversion (`np.linalg.inv`) | Computes the multiplicative matrix inverse $A^{-1}$ such that $A \cdot A^{-1} = I$ for non-singular square matrices. | Inversion: $O(N^3)$ Gaussian/LU decomposition<br>Conditioning & numerical stability |
 | [`matrixmul_numpy.py`](matrixmul_numpy.py) | Matrix Multiplication (`@` Operator & `np.dot`) | Performs true matrix-matrix multiplication between 2D matrices using both Python 3.5+ `@` operator and `np.dot()`. | Matrix Product: $O(N^3)$ (optimized BLAS/GEMM routines)<br>Dimensional compatibility ($M \times K$ with $K \times N$) |
 | [`miniproject_numpy.py`](miniproject_numpy.py) | Student Performance Analytics Mini-Project (`NaN` Imputation, Aggregations & Argmax) | Comprehensive data cleaning and analytics workflow: detects missing values with `np.isnan()`, computes subject means via `np.nanmean(axis=0)`, imputes missing marks with `np.where()`, calculates student totals/averages (`axis=1`), and determines top rankers with `np.argmax()`. | Imputation & Cleaning: $O(N \times M)$<br>Row/Column Reductions: $O(N \times M)$<br>Top Student Argmax: $O(N)$ |
+| [`series_pandas.py`](series_pandas.py) | 1D Labeled Pandas Series Creation | Instantiates a 1D Pandas `Series` with default 0-indexed integer identifiers. | Series Initialization: $O(N)$<br>Indexed lookup: $O(1)$ |
+| [`customindex_pandas.py`](customindex_pandas.py) | Custom Index Mapping in Pandas Series | Creates a Pandas `Series` with custom categorical/alphabetic index labels (`["A", "B", "C", "D", "E"]`). | Explicit Indexing: $O(N)$<br>Hash-map based label access: $O(1)$ |
+| [`DataFrame_pandas.py`](DataFrame_pandas.py) | 2D Tabular DataFrame Construction | Builds multi-column 2D tabular `DataFrame` structures from dictionaries of lists with uniform row alignment. | DataFrame Instantiation: $O(N \times M)$<br>Columnar structure & memory layout |
 
 ---
 
